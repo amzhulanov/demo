@@ -33,7 +33,7 @@ class MailControllerTest {
         mvc.perform(MockMvcRequestBuilders
                 .get("/sb/service")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
-                .andExpect(status().isOk());
+                .andExpect(status().isBadRequest());
     }
 
 
