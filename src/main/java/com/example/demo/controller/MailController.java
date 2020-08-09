@@ -12,6 +12,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/service")
@@ -22,7 +24,6 @@ public class MailController {
     private final MailService mailService;
     private final ObjectMapper objectMapper;
 
-
     @Autowired
     public MailController(Convert convert, MailService mailService, ObjectMapper objectMapper) {
         this.convert = convert;
@@ -31,15 +32,26 @@ public class MailController {
     }
 
     @GetMapping
-    public ResponseEntity<String> searchEmail(@RequestBody String json) throws JsonProcessingException {
-        Mail mail = convert.toEntity(json);
-        if (mailService.searchEmail(mail)) {
-            return new ResponseEntity<>(objectMapper.writeValueAsString(new DublicateDto(true)), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> searchMail(@RequestBody String json) throws JsonProcessingException {
+        if (checkEmail(json)) {
+            Mail mail = convert.toEntity(json);
+            if (mailService.searchMail(mail)) {
+                return new ResponseEntity<>(objectMapper.writeValueAsString(new DublicateDto(true)), HttpStatus.BAD_REQUEST);
+            } else {
+                return new ResponseEntity<>("", HttpStatus.OK);
+            }
         } else {
-            return new ResponseEntity<>("", HttpStatus.OK);
+            return new ResponseEntity<>("The request must contain email", HttpStatus.BAD_REQUEST);
         }
-
     }
 
+    private boolean checkEmail(String json) {
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+");
+        Matcher matcher = pattern.matcher(json);
+        if (matcher.find()) {
+            return true;
+        }
+        return false;
+    }
 
 }

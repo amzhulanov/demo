@@ -31,8 +31,18 @@ class MailControllerTest {
     void searchEmailTest() throws Exception {
 
         mvc.perform(MockMvcRequestBuilders
-                .get("/sb/service")
+                .get("/service")
                 .contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isOk());
+
+        mvc.perform(MockMvcRequestBuilders
+                .get("/service")
+                .contentType(MediaType.APPLICATION_JSON).content(json))
+                .andExpect(status().isBadRequest());
+
+        mvc.perform(MockMvcRequestBuilders
+                .get("/service")
+                .contentType(MediaType.APPLICATION_JSON).content("mail.ru"))
                 .andExpect(status().isBadRequest());
     }
 

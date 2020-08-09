@@ -15,7 +15,7 @@ public class MailService {
         this.mailRepository = mailRepository;
     }
 
-    public Boolean searchEmail(Mail mail) {
+    public Boolean searchMail(Mail mail) {
         if (mailRepository.findCountByMail(mail.getMail()) == 0) {
             save(mail);
             return false;

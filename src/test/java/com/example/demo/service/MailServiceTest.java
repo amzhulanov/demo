@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import com.example.demo.entities.Mail;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,6 @@ class MailServiceTest {
 
     @Test
     void searchEmail() {
-        assertThat(mailService.searchEmail(new Mail("1@1.ru"))).isFalse();
+        assertThat(mailService.searchMail(new Mail("1@1.ru"))).isFalse();
     }
 }
